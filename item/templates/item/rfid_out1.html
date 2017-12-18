@@ -1,0 +1,64 @@
+{% extends 'item/base.html' %}
+
+{% block RFID_MGMT %}active{% endblock %}
+{% block RFID_OUT1 %}active{% endblock %}
+
+{% block body %}
+
+    <style type="text/css">
+        .errors {
+        }
+    </style>
+    <div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">RFID 납품</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- RFIDs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>RFIDs 납품
+                </div>
+                <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form action="" method="post" role="form">
+                                        {% csrf_token %}
+                                        {% if error %}
+                                            <p style="color: red;">
+                                        {% else %}
+                                            <p style="color: black">
+                                        {% endif %}
+                                            {{ message }} </p>
+                                        <div class="form-group">
+                                            <label>RFIDs</label>
+                                            <textarea name="rfids" class="form-control" rows="3" >{{ rfids }}</textarea>
+                                            <p class="help-block">RFID를 여러개 입력가능합니다. 구분 문자는 [Enter]입니다.</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>납품회사</label>
+                                            <input name="f_firm" class="form-control" value="{{ f_firm }}">
+                                            <p class="help-block">RFID 납품 회사를 입력하세요.</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>납품일자</label>
+                                            <input name="f_date" class="form-control" type=date placeholder="yyyy-mm-dd" value="{{ f_date }}">
+                                            <p class="help-block">일자 포맷[YYYY-MM-DD].</p>
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Submit Button</button>
+                                        <button type="reset" class="btn btn-default">Reset Button</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

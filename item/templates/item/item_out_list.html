@@ -1,0 +1,57 @@
+{% extends 'item/base.html' %}
+
+{% block ITEM_OUT1 %}active{% endblock %}
+
+{% block body %}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">출고 관리</h1>
+        </div>
+
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- RFIDs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-8"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span>제품/자재 출고 현황</div>
+                        <div class="col-md-4 text-right">
+                             <a href="{% url 'item:item_out' %}?op=ADD" class="btn btn-xs btn-bd-purple mb-3 mb-md-0 mr-md-3"><span class="glyphicon glyphicon-plus"></span></a>
+                        </div>
+                    </div>
+                </div>
+                 {% if itemouts %}
+                    <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>제품/자재명</th>
+                                        <th>출고일자</th>
+                                        <th>출고회사</th>
+                                        <th>출고수량</th>
+                                        <th>비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%  for itemout in itemouts %}
+                                        <tr class="">
+                                            <td>{{ itemout.Item}}</td>
+                                            <td>{{ itemout.out_date | date:"Y-m-d"}}</td>
+                                            <td>{{ itemout.out_firm}}</td>
+                                            <td>{{ itemout.out_qty}}</td>
+                                            <td>{{ itemout.message}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'item/base.html' %}
+{% block title %}All Songs{% endblock %}
+{% block songs_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a href="{% url 'item:rfiddets' 'all' %}">View All</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th>납품일</th>
+                            <th>납품회사</th>
+                            <th>RFID상태</th>
+                            <th>수리 입고일</th>
+                            <th>비고</th>
+                            <th>삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for rfiddet in rfiddets %}
+                            <tr>
+                                <td>{{ rfiddet.out_date}}</td>
+                                <td>{{ rfiddet.out_firm}}</td>
+                                <td>{{ rfiddet.rf_id_state}}</td>
+                                <td>{{ rfiddet.in_date}}</td>
+                                <td>{{ rfiddet.message}}</td>
+                                <td>
+                                    <form action="{% url 'item:delete_rfiddet' rfiddet.RFId_id rfiddet.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="rfiddet_id" value="{{ rfiddet.id }}" />
+                                        <button type="submit" class="btn btn-default btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

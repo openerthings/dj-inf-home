@@ -1,0 +1,80 @@
+{% extends 'item/base.html' %}
+{% block title %}{{ album }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1><a href="{% url 'item:detail' rfid.rf_id %}">{{ rfid.rf_id }}</a></h1>
+                    {{ rfid.in_date}} <br>
+                    {{ rfid.mfr_firm }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'item:detail' rfid.rf_id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'item:create_rfiddet' rfid.rf_id %}">Add New Delivery</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>Delivery Info</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>납품일</th>
+                            <th>납품회사</th>
+                            <th>RFID상태</th>
+                            <th>수리 입고일</th>
+                            <th>비고</th>
+                            <th>삭제</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for rfiddet in rfid.rfiddet_set.all %}
+                            <tr>
+                                <td>{{ rfiddet.out_date}}</td>
+                                <td>{{ rfiddet.out_firm}}</td>
+                                <td>{{ rfiddet.rf_id_state}}</td>
+                                <td>{{ rfiddet.in_date}}</td>
+                                <td>{{ rfiddet.message}}</td>
+                                <td>
+                                    <form action="{% url 'item:delete_rfiddet' rfid.rf_id rfiddet.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="song_id" value="{{ rfiddet.id }}" />
+                                        <button type="submit" class="btn btn-default btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
